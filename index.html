@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFT-D | Financial Information Consulting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+
+        :root {
+            --main: #F97316;
+            --secondary: #FDBA74;
+            --accent: #EC4899;
+            --bg: #FFF7ED;
+            --title-text: #292524;
+            --body-text: #78716C;
+            --page-normal: #FED7AA;
+            --page-disabled: #E7E5E4;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--body-text);
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: var(--bg);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--title-text);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--main);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--title-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: var(--secondary);
+        }
+
+        .nav-link.active {
+            background-color: var(--main);
+            color: #fff;
+        }
+
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            color: var(--title-text);
+            cursor: pointer;
+        }
+
+        /* Page Sections */
+        .section {
+            display: none;
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            min-height: 80vh;
+            flex-wrap: wrap;
+        }
+
+        .hero-text {
+            flex: 1 1 400px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--title-text);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: var(--main);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background-color: var(--main);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .hero-img {
+            flex: 1 1 400px;
+        }
+
+        .hero-img img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(249, 115, 22, 0.15);
+        }
+
+        /* General Section Style */
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--title-text);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent);
+            margin: 12px auto 0;
+            border-radius: 2px;
+        }
+
+        .content-card {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            margin-bottom: 2rem;
+        }
+
+        .content-card h3 {
+            color: var(--title-text);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .grid-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            border-top: 5px solid var(--main);
+            transition: transform 0.3s ease;
+        }
+
+        .grid-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .grid-card h4 {
+            color: var(--title-text);
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .img-box {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .img-box img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        /* Contact Page */
+        .contact-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info h3 {
+            color: var(--title-text);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+
+        .contact-item strong {
+            color: var(--title-text);
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 1.2rem;
+            border: 1px solid var(--page-normal);
+            border-radius: 6px;
+            background: #fff;
+            font-size: 1rem;
+            color: var(--title-text);
+        }
+
+        .contact-form textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .success-msg {
+            color: #16a34a;
+            font-weight: 500;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* Pagination Style */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 3rem;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background-color: var(--page-normal);
+            color: var(--title-text);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn.active {
+            background-color: var(--main);
+            color: #fff;
+        }
+
+        .page-btn:disabled {
+            background-color: var(--page-disabled);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Pagination Content */
+        .page-content {
+            display: none;
+        }
+        .page-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--title-text);
+            color: #ddd;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--bg);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                display: none;
+            }
+
+            .nav-menu.show {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .contact-wrap {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">IFT<span>-D</span></a>
+            <div class="menu-toggle" id="menuToggle">☰</div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link active" data-target="home">Home</a></li>
+                <li><a href="#about" class="nav-link" data-target="about">About Us</a></li>
+                <li><a href="#services" class="nav-link" data-target="services">Services</a></li>
+                <li><a href="#team" class="nav-link" data-target="team">Our Team</a></li>
+                <li><a href="#contact" class="nav-link" data-target="contact">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section class="section active" id="home">
+        <div class="hero">
+            <div class="hero-text">
+                <h1>Professional <span>Financial</span> Information Consulting</h1>
+                <p>IFT-D provides reliable, professional and comprehensive financial information consulting services for global clients. With rich industry experience and professional analysis capabilities, we help you grasp market trends and make wise financial decisions.</p>
+                <a href="#contact" class="btn" data-target="contact">Get In Touch</a>
+            </div>
+            <div class="hero-img">
+                <img src="https://almohamedsosy845-arch.github.io/359/27.jpg" alt="IFT-D Financial Consulting">
+            </div>
+        </div>
+
+        <div class="img-box">
+            <img src="https://almohamedsosy845-arch.github.io/359/28.jpg" alt="Financial Service">
+        </div>
+
+        <div class="grid-container">
+            <div class="grid-card">
+                <h4>Market Analysis</h4>
+                <p>We deliver real-time financial market analysis, industry insights and trend forecasts to support your investment layout. Our analysis covers stock markets, foreign exchange, commodities, and digital assets across major global financial hubs including New York, London, Tokyo, and Hong Kong.</p>
+            </div>
+            <div class="grid-card">
+                <h4>Strategy Consulting</h4>
+                <p>Customized financial planning and consulting solutions for enterprises and individual investors of all sizes. We combine macroeconomic trends with micro-level enterprise/individual needs to create actionable, risk-adjusted strategies.</p>
+            </div>
+            <div class="grid-card">
+                <h4>Risk Assessment</h4>
+                <p>Professional financial risk evaluation and early warning services to protect your capital safety. Our risk assessment framework covers credit risk, market risk, operational risk, and liquidity risk, with real-time monitoring capabilities.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="section" id="about">
+        <h2 class="section-title">About IFT-D</h2>
+        
+        <!-- Page 1 Content -->
+        <div class="page-content active" id="about-page-1">
+            <div class="content-card">
+                <h3>Company Profile</h3>
+                <p>IFT-D is a leading financial information consulting firm based in Manchester, England. Founded in 2010, we have grown from a regional financial advisory firm to a global player with clients in over 30 countries across Europe, Asia, North America, and Australia.</p>
+                <br>
+                <p>We adhere to the service concept of integrity, professionalism and efficiency, integrate advanced data analysis technology and rich practical experience, and build a complete financial service system. Our team consists of senior financial analysts, industry experts and professional consultants who are familiar with global financial rules and market dynamics.</p>
+                <br>
+                <p>Over the past 14 years, we have served more than 2,000 corporate clients (including 50+ Fortune 500 companies) and 10,000+ high-net-worth individuals, helping them achieve an average annual return on investment that is 15% higher than the industry benchmark.</p>
+            </div>
+
+            <div class="img-box">
+                <img src="https://almohamedsosy845-arch.github.io/359/29.jpg" alt="Company Introduction">
+            </div>
+
+            <div class="content-card">
+                <h3>Our Core Values</h3>
+                <ul style="padding-left: 20px; margin-top: 10px; color: var(--title-text);">
+                    <li><strong>Integrity:</strong> We maintain the highest ethical standards in all our professional relationships</li>
+                    <li><strong>Excellence:</strong> We strive for continuous improvement in all aspects of our services</li>
+                    <li><strong>Client-Centric:</strong> Client success is our ultimate measure of achievement</li>
+                    <li><strong>Innovation:</strong> We leverage cutting-edge technology to deliver superior financial insights</li>
+                    <li><strong>Transparency:</strong> We provide clear, understandable advice with no hidden agendas</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Page 2 Content -->
+        <div class="page-content" id="about-page-2">
+            <div class="content-card">
+                <h3>Our Vision & Mission</h3>
+                <p><strong>Vision:</strong> To become the most trusted financial information consulting partner worldwide, empowering clients to navigate complex financial landscapes with confidence and clarity.</p>
+                <br>
+                <p><strong>Mission:</strong> Empower clients with professional financial information and consulting services, create stable value for every partner. We aim to bridge the gap between complex financial data and actionable business decisions, enabling our clients to achieve sustainable growth and financial security.</p>
+            </div>
+
+            <div class="content-card">
+                <h3>Our Development Milestones</h3>
+                <p><strong>2010:</strong> IFT-D founded in Manchester, UK, focusing on local SME financial consulting</p>
+                <br>
+                <p><strong>2014:</strong> Expanded to London, established first international office in Singapore</p>
+                <br>
+                <p><strong>2018:</strong> Launched proprietary financial analysis platform, serving 1,000+ corporate clients</p>
+                <br>
+                <p><strong>2021:</strong> Recognized as "Best Financial Consulting Firm in Europe" by Global Finance Magazine</p>
+                <br>
+                <p><strong>2024:</strong> Expanded service portfolio to include ESG (Environmental, Social, Governance) consulting, opened offices in New York and Shanghai</p>
+            </div>
+
+            <div class="img-box">
+                <img src="https://almohamedsosy845-arch.github.io/359/30.jpg" alt="Company Milestones">
+            </div>
+        </div>
+
+        <div class="pagination" id="about-pagination">
+            <button class="page-btn" id="about-prev" disabled>&lt;</button>
+            <button class="page-btn active" data-page="1">1</button>
+            <button class="page-btn" data-page="2">2</button>
+            <button class="page-btn" id="about-next">&gt;</button>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section" id="services">
+        <h2 class="section-title">Our Services</h2>
+        
+        <!-- Page 1 Content -->
+        <div class="page-content active" id="services-page-1">
+            <div class="grid-container">
+                <div class="grid-card">
+                    <h4>Financial Information Inquiry</h4>
+                    <p>Collect, sort and interpret global financial data, market quotations and industry news to provide comprehensive information support. Our real-time data feed covers 100+ global financial markets, updated every 15 seconds, with customizable alerts and reports.</p>
+                </div>
+                <div class="grid-card">
+                    <h4>Investment Consulting</h4>
+                    <p>Provide targeted investment advice, portfolio optimization suggestions and long-term investment plan design. We specialize in diversified portfolios, alternative investments, and retirement planning tailored to risk tolerance and financial goals.</p>
+                </div>
+                <div class="grid-card">
+                    <h4>Enterprise Financial Consulting</h4>
+                    <p>Financial management consulting, capital operation planning and financial system optimization for enterprises. Services include financial restructuring, cash flow management, cost optimization, and capital raising strategies for SMEs and large corporations.</p>
+                </div>
+                <div class="grid-card">
+                    <h4>Industry Research Report</h4>
+                    <p>Customized in-depth industry research, market research and competitor analysis reports. Our reports combine quantitative data with qualitative insights, covering 20+ key industries including fintech, renewable energy, healthcare, and real estate.</p>
+                </div>
+                <div class="grid-card">
+                    <h4>Financial Training</h4>
+                    <p>Professional financial knowledge training and skill guidance for individuals and corporate teams. Courses include financial modeling, risk management, regulatory compliance, and investment analysis, delivered by certified industry experts.</p>
+                </div>
+                <div class="grid-card">
+                    <h4>Cross-border Financial Consulting</h4>
+                    <p>Cross-border financial policy interpretation, business guidance and risk control consulting services. We help clients navigate international tax regulations, foreign exchange management, and cross-border investment compliance across major economies.</p>
+                </div>
+            </div>
+
+            <div class="img-box">
+                <img src="https://almohamedsosy845-arch.github.io/359/31.jpg" alt="Our Services">
+            </div>
+        </div>
+
+        <!-- Page 2 Content -->
+        <div class="page-content" id="services-page-2">
+            <div class="content-card">
+                <h3>Service Process & Methodology</h3>
+                <p>Our consulting process follows a rigorous, client-centric methodology to ensure optimal outcomes:</p>
+                <br>
+                <ol style="padding-left: 20px; color: var(--title-text);">
+                    <li><strong>Needs Assessment:</strong> In-depth analysis of client's financial situation, goals, and risk tolerance</li>
+                    <li><strong>Data Collection & Analysis:</strong> Gathering relevant market data, industry trends, and client-specific information</li>
+                    <li><strong>Strategy Development:</strong> Creating customized solutions aligned with client objectives</li>
+                    <li><strong>Implementation Support:</strong> Assisting with execution and providing ongoing guidance</li>
+                    <li><strong>Performance Monitoring:</strong> Regular review and adjustment of strategies based on market changes</li>
+                    <li><strong>Reporting & Feedback:</strong> Transparent communication of results and continuous improvement</li>
+                </ol>
+            </div>
+
+            <div class="content-card">
+                <h3>Service Advantages</h3>
+                <ul style="padding-left: 20px; color: var(--title-text);">
+                    <li><strong>Global Perspective with Local Expertise:</strong> Our multicultural team understands regional market nuances while maintaining a global outlook</li>
+                    <li><strong>Technology-Driven:</strong> We leverage AI and big data analytics to enhance decision-making accuracy</li>
+                    <li><strong>Customized Solutions:</strong> No "one-size-fits-all" approaches – every solution is tailored to client needs</li>
+                    <li><strong>Timely Response:</strong> 24/7 support for critical markets and urgent client needs</li>
+                    <li><strong>Compliance Focused:</strong> All recommendations adhere to the latest regulatory requirements worldwide</li>
+                </ul>
+            </div>
+
+            <div class="img-box">
+                <img src="https://almohamedsosy845-arch.github.io/359/32.jpg" alt="Service Methodology">
+            </div>
+        </div>
+
+        <div class="pagination" id="services-pagination">
+            <button class="page-btn" id="services-prev" disabled>&lt;</button>
+            <button class="page-btn active" data-page="1">1</button>
+            <button class="page-btn" data-page="2">2</button>
+            <button class="page-btn" id="services-next">&gt;</button>
+        </div>
+    </section>
+
+    <!-- Our Team Section -->
+    <section class="section" id="team">
+        <h2 class="section-title">Our Professional Team</h2>
+        
+        <!-- Page 1 Content -->
+        <div class="page-content active" id="team-page-1">
+            <div class="content-card">
+                <p>IFT-D gathers a group of elites who have been engaged in the financial industry for many years. All team members have professional financial backgrounds and rich practical experience, covering market analysis, risk control, investment research and other fields. Our team includes CFA (Chartered Financial Analyst), CPA (Certified Public Accountant), FRM (Financial Risk Manager), and other certified professionals, with an average of 12 years of industry experience.</p>
+                <br>
+                <p>We foster a culture of continuous learning and professional development, ensuring our team stays ahead of industry trends, regulatory changes, and technological advancements. Our collaborative approach brings together diverse expertise to solve complex financial challenges for our clients.</p>
+            </div>
+
+            <div class="grid-container">
+                <div class="grid-card">
+                    <h4>Senior Financial Analysts</h4>
+                    <p>Responsible for daily market monitoring, data analysis and trend judgment, output professional analysis content. Our analysts specialize in different asset classes and geographic regions, providing deep domain expertise and actionable insights.</p>
+                    <br>
+                    <p>Key qualifications: CFA charterholders, advanced financial modeling skills, proficiency in statistical analysis tools (Python, R, Tableau), and multilingual capabilities (English, Mandarin, Spanish, German).</p>
+                </div>
+                <div class="grid-card">
+                    <h4>Consulting Experts</h4>
+                    <p>Communicate with clients one-on-one, formulate exclusive consulting plans and solve financial problems. Our consultants have extensive client-facing experience and deep industry knowledge across various sectors.</p>
+                    <br>
+                    <p>Areas of expertise: Corporate finance, wealth management, cross-border investment, ESG strategy, and financial regulatory compliance.</p>
+                </div>
+                <div class="grid-card">
+                    <h4>Risk Control Specialists</h4>
+                    <p>Focus on financial risk identification, assessment and early warning to ensure service security. Our risk control team designs and implements robust risk management frameworks for clients of all sizes.</p>
+                    <br>
+                    <p>Core competencies: FRM certification, stress testing, scenario analysis, regulatory compliance, and risk mitigation strategy development.</p>
+                </div>
+            </div>
+
+            <div class="img-box">
+                <img src="https://almohamedsosy845-arch.github.io/359/33.jpg" alt="Our Team">
+            </div>
+        </div>
+
+        <!-- Page 2 Content -->
+        <div class="page-content" id="team-page-2">
+            <div class="content-card">
+                <h3>Leadership Team</h3>
+                <p><strong>Michael Thompson - CEO & Founder</strong></p>
+                <p>25 years of financial industry experience, former senior executive at a top global investment bank, specializing in corporate finance and strategic planning. MBA from London Business School, CFA charterholder.</p>
+                <br>
+                <p><strong>Sarah Chen - Chief Financial Officer</strong></p>
+                <p>18 years of financial management experience, expertise in cross-border financial operations and risk management. Former CFO of a multinational fintech company, CPA and FRM certified.</p>
+                <br>
+                <p><strong>David Rodriguez - Chief Investment Strategist</strong></p>
+                <p>20 years of investment research experience, specializing in global asset allocation and alternative investments. Regular contributor to financial media including Bloomberg and Financial Times.</p>
+                <br>
+                <p><strong>Emily Wang - Head of Client Services</strong></p>
+                <p>15 years of client relationship management experience, focused on delivering exceptional client experiences and customized solutions. Multilingual (English, Mandarin, French) with extensive international client management experience.</p>
+            </div>
+
+            <div class="content-card">
+                <h3>Our Culture & Values</h3>
+                <p>At IFT-D, we believe that our people are our greatest asset. We cultivate an inclusive, collaborative work environment that encourages innovation, integrity, and excellence. Our team benefits from:</p>
+                <br>
+                <ul style="padding-left: 20px; color: var(--title-text);">
+                    <li>Continuous professional development opportunities</li>
+                    <li>Global mobility and cross-cultural exposure</li>
+                    <li>Client-focused performance incentives</li>
+                    <li>Flexible work arrangements</li>
+                    <li>Commitment to diversity, equity, and inclusion</li>
+                </ul>
+            </div>
+
+            <div class="img-box">
+                <img src="https://almohamedsosy845-arch.github.io/359/34.jpg" alt="Leadership Team">
+            </div>
+        </div>
+
+        <div class="pagination" id="team-pagination">
+            <button class="page-btn" id="team-prev" disabled>&lt;</button>
+            <button class="page-btn active" data-page="1">1</button>
+            <button class="page-btn" data-page="2">2</button>
+            <button class="page-btn" id="team-next">&gt;</button>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section class="section" id="contact">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="contact-wrap">
+            <div class="contact-info">
+                <h3>Get In Touch</h3>
+                <div class="contact-item">
+                    <strong>Head Office Address:</strong> England Manchester 76 2A St Mary's St, M3 2JF, United Kingdom
+                </div>
+                <div class="contact-item">
+                    <strong>London Office:</strong> 120 Fenchurch Street, London EC3M 5BA, United Kingdom
+                </div>
+                <div class="contact-item">
+                    <strong>Phone (UK):</strong> +44 7834283342
+                </div>
+                <div class="contact-item">
+                    <strong>Phone (International):</strong> +44 20 7946 0812
+                </div>
+                <div class="contact-item">
+                    <strong>Email:</strong> info@IFT-Dfinancial.com
+                </div>
+                <div class="contact-item">
+                    <strong>Business Hours:</strong> Monday - Friday: 09:00 - 18:00 (GMT/BST)
+                </div>
+                <div class="contact-item">
+                    <strong>24/7 Emergency Support:</strong> +44 7987 654321 (for existing clients only)
+                </div>
+                
+                <div class="content-card" style="margin-top: 2rem;">
+                    <h3>How To Find Us</h3>
+                    <p>Our Manchester office is located in the heart of the city, a 5-minute walk from Manchester Piccadilly train station and easily accessible by public transport. Free visitor parking is available at the rear of the building (limited spaces, please book in advance).</p>
+                    <br>
+                    <p>For international clients, we offer virtual meetings via Zoom, Microsoft Teams, and Webex, with multilingual support available upon request.</p>
+                </div>
+
+                <div class="img-box" style="margin-top:2rem;">
+                    <img src="https://almohamedsosy845-arch.github.io/359/35.jpg" alt="Contact">
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h3>Send Us a Message</h3>
+                <p style="margin-bottom: 1.5rem;">We value your inquiry and will respond within 24 business hours. For urgent matters, please call our direct line.</p>
+                <form id="contactForm">
+                    <input type="text" placeholder="Your Full Name" required>
+                    <input type="email" placeholder="Your Business Email" required>
+                    <input type="text" placeholder="Phone Number (Optional)">
+                    <input type="text" placeholder="Subject (e.g., Investment Consulting, Corporate Finance)">
+                    <textarea placeholder="Please describe your inquiry in detail, including your objectives, timeline, and any specific requirements you may have. This helps us provide a more targeted response." required></textarea>
+                    <div style="display: flex; align-items: center; margin-bottom: 1.2rem;">
+                        <input type="checkbox" id="privacy-consent" required style="width: auto; margin-right: 10px;">
+                        <label for="privacy-consent" style="font-size: 0.9rem;">I consent to IFT-D processing my personal data for the purpose of responding to my inquiry (in accordance with GDPR)</label>
+                    </div>
+                    <button type="submit" class="btn">Submit Inquiry</button>
+                    <div class="success-msg" id="successMsg">Submitted successfully! We will reply to you as soon as possible (within 24 business hours).</div>
+                </form>
+            </div>
+        </div>
+
+        <div class="content-card" style="margin-top: 3rem;">
+            <h3 style="text-align: center;">Other Ways To Connect</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                <div style="text-align: center;">
+                    <strong>LinkedIn</strong>
+                    <p>IFT-D Financial Consulting</p>
+                </div>
+                <div style="text-align: center;">
+                    <strong>Twitter/X</strong>
+                    <p>@IFT-DFinancial</p>
+                </div>
+                <div style="text-align: center;">
+                    <strong>WeChat</strong>
+                    <p>IFT-D_Financial</p>
+                </div>
+                <div style="text-align: center;">
+                    <strong>Monthly Webinars</strong>
+                    <p>Register via our website</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 IFT-D Financial Information Consulting. All Rights Reserved.</p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">Regulated by the Financial Conduct Authority (FCA) | Company Registration No: 12345678 | VAT No: GB123456789</p>
+    </footer>
+
+    <script>
+        // Navigation Switch
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section');
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        // Mobile menu toggle
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
+        });
+
+        // Switch page sections
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+
+                // Update nav active status
+                navLinks.forEach(item => item.classList.remove('active'));
+                link.classList.add('active');
+
+                // Update section display
+                sections.forEach(sec => {
+                    sec.classList.remove('active');
+                    if (sec.id === targetId) {
+                        sec.classList.add('active');
+                        // Scroll to top of section
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+
+                // Close mobile menu after click
+                navMenu.classList.remove('show');
+            });
+        });
+
+        // Contact Form Submit
+        const contactForm = document.getElementById('contactForm');
+        const successMsg = document.getElementById('successMsg');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Show success message regardless of content
+            successMsg.style.display = 'block';
+            // Reset form
+            contactForm.reset();
+            // Hide message after 3s
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+        });
+
+        // Pagination Logic
+        function setupPagination(sectionId) {
+            const pagination = document.getElementById(`${sectionId}-pagination`);
+            const pageBtns = pagination.querySelectorAll('.page-btn[data-page]');
+            const prevBtn = document.getElementById(`${sectionId}-prev`);
+            const nextBtn = document.getElementById(`${sectionId}-next`);
+            const pageContents = document.querySelectorAll(`#${sectionId}-page-`);
+
+            let currentPage = 1;
+            const totalPages = pageBtns.length;
+
+            // Update pagination state
+            function updatePagination() {
+                // Update active page buttons
+                pageBtns.forEach(btn => {
+                    const page = parseInt(btn.getAttribute('data-page'));
+                    btn.classList.toggle('active', page === currentPage);
+                });
+
+                // Update prev/next button state
+                prevBtn.disabled = currentPage === 1;
+                nextBtn.disabled = currentPage === totalPages;
+
+                // Show active page content
+                pageContents.forEach(content => {
+                    const pageNum = parseInt(content.id.split('-').pop());
+                    content.classList.toggle('active', pageNum === currentPage);
+                });
+
+                // Scroll to top of section
+                document.getElementById(sectionId).scrollIntoView({ top: 0, behavior: 'smooth' });
+            }
+
+            // Page button click handler
+            pageBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentPage = parseInt(btn.getAttribute('data-page'));
+                    updatePagination();
+                });
+            });
+
+            // Prev button click handler
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePagination();
+                }
+            });
+
+            // Next button click handler
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updatePagination();
+                }
+            });
+        }
+
+        // Setup pagination for all sections
+        setupPagination('about');
+        setupPagination('services');
+        setupPagination('team');
+    </script>
+</body>
+</html>
